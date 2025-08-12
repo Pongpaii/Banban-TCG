@@ -4,12 +4,12 @@ use App\Http\Controllers\Api\CardController;
 use App\Http\Controllers\Api\AdminController;
 use Illuminate\Support\Facades\Route;
 
-// Public routes
+// <CHANGE> Removed duplicate /cards route, keeping only controller-based routes
 Route::get('/cards', [CardController::class, 'index']);
 Route::get('/cards/{slug}', [CardController::class, 'show']);
 Route::post('/cards/search', [CardController::class, 'search']);
 
-// Admin routes (ใส่ middleware auth ตามต้องการ)
+// Admin routes
 Route::prefix('admin')->group(function () {
     Route::post('/cards', [AdminController::class, 'addCard']);
     Route::put('/cards/{id}/prices', [AdminController::class, 'updatePrices']);

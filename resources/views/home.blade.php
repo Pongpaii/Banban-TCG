@@ -9,7 +9,7 @@
         <div class="max-w-6xl mx-auto flex items-center justify-between">
             <!-- Logo -->
             <div>
-                <h1 class="text-xl font-bold text-gray-800">บ้านบ้าน TCG</h1>
+                <h1 class="text-xl font-bold text-gray-800">TCG บ้านบ้าน</h1>
             </div>
 
             <!-- Main Navigation -->
@@ -51,7 +51,7 @@
                 <!-- Left Content -->
                 <div class="text-center lg:text-left">
                     <h1 class="text-3xl lg:text-5xl font-bold text-gray-800 mb-4 leading-tight">
-                        บ้านบ้าน TCG –<br />
+                        TCG บ้านบ้าน –<br />
                         <span class="text-yellow-600">เช็คราคา หาเด็ค</span><br />
                         การ์ดโปเกม่อน
                     </h1>
