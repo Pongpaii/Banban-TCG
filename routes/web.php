@@ -24,11 +24,14 @@ Route::get('/register', function () {
 Route::get('/admin', function () {
     return view('admin.index');
 });
+use App\Http\Controllers\Api\CardController;
 
-Route::get('/admin/add-card', function () {
-    return view('admin.add-card');
+Route::post('/cards/store', [CardController::class, 'store'])->name('cards.store');
+
+
+Route::get('addcard', function () {
+    return view('addcard');
 });
-
 Route::get('/history', function () {
     return view('history');
 });
@@ -43,8 +46,10 @@ Route::get('/about', function () {
 
 // <CHANGE> Updated card route with proper card data matching the API
 Route::get('/card/{slug}', function ($slug) {
+    
     // Card data that matches your API
     $cardData = [
+        
         'mew-ex' => [
             'name' => 'Mew EX',
             'nameTh' => 'มิว ex',
@@ -79,6 +84,7 @@ Route::get('/card/{slug}', function ($slug) {
                 ['name' => 'TCG Facebook Group', 'price' => '฿2,900'],
             ]
         ]
+        
     ];
     
     $card = $cardData[$slug] ?? null;

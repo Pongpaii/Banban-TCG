@@ -18,7 +18,8 @@ class Card extends Model
         'description',
         'image_url',
         'slug',
-        'average_price'
+        'average_price',
+        'price_change',
     ];
 
     public function priceSources()

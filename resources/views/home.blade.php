@@ -109,17 +109,18 @@
                 </div>
             </a>
 
-            <a href="/admin" class="block p-8 bg-gradient-to-br from-green-50 to-white border-2 border-transparent hover:border-yellow-200 rounded-lg hover:shadow-lg transition-all duration-300">
+            <a href="/addcard" class="block p-8 bg-gradient-to-br from-green-50 to-white border-2 border-transparent hover:border-green-200 rounded-lg hover:shadow-lg transition-all duration-300">
                 <div class="flex items-center space-x-4">
                     <div class="w-16 h-16 bg-green-200 rounded-2xl flex items-center justify-center">
-                        <span class="text-2xl">🔧</span>
+                        <i data-lucide="plus" class="h-8 w-8 text-gray-800"></i>
                     </div>
                     <div>
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">Admin Panel</h3>
-                        <p class="text-gray-600">จัดการการ์ดและราคา</p>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">เพิ่มการ์ด</h3>
+                        <p class="text-gray-600">เพิ่มการ์ดใหม่เข้าสู่ระบบ</p>
                     </div>
                 </div>
             </a>
+            
         </div>
 
         <!-- Popular Cards Section -->
@@ -171,4 +172,81 @@ fetch('/api/cards')
         document.getElementById('popular-cards').innerHTML = '<p class="text-gray-500 text-center col-span-full">ไม่สามารถโหลดข้อมูลการ์ดได้</p>';
     });
 </script>
+<!-- Why Banban TCG (Compact Version) -->
+<section class="py-12">
+    <div class="max-w-5xl mx-auto px-4">
+        <div class="bg-blue-50 rounded-xl p-6 md:p-8 shadow-inner">
+            <h2 class="text-xl md:text-2xl font-bold text-center text-gray-800 mb-8">
+                ทำไมต้องใช้ Banban TCG?
+            </h2>
+            <div class="grid md:grid-cols-3 gap-4 text-center">
+                <!-- กล่อง 1 -->
+                <div class="bg-white p-4 rounded-lg shadow flex flex-col items-center">
+                    <div class="text-2xl mb-2">🎯</div>
+                    <h3 class="text-base font-semibold text-gray-800 mb-1">ราคาแม่นยำ</h3>
+                    <p class="text-sm text-gray-600">ข้อมูลจากหลายแหล่งที่เชื่อถือได้</p>
+                </div>
+
+                <!-- กล่อง 2 -->
+                <div class="bg-white p-4 rounded-lg shadow flex flex-col items-center">
+                    <div class="text-2xl mb-2">⚡</div>
+                    <h3 class="text-base font-semibold text-gray-800 mb-1">สแกนเร็ว</h3>
+                    <p class="text-sm text-gray-600">ได้ผลลัพธ์ภายในไม่กี่วินาที</p>
+                </div>
+
+                <!-- กล่อง 3 -->
+                <div class="bg-white p-4 rounded-lg shadow flex flex-col items-center">
+                    <div class="text-2xl mb-2">🔧</div>
+                    <h3 class="text-base font-semibold text-gray-800 mb-1">สร้างเด็ค</h3>
+                    <p class="text-sm text-gray-600">เครื่องมือสร้างเด็คที่ครบครัน</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="bg-gray-50 border-t border-gray-200 mt-16">
+    <div class="max-w-6xl mx-auto px-4 py-12 grid md:grid-cols-4 gap-8 text-sm text-gray-700">
+        <div>
+            <h3 class="text-lg font-semibold text-gray-800 mb-2">Banban TCG</h3>
+            <p>แอปพลิเคชันสำหรับนักสะสมการ์ดโปเกมอนในประเทศไทย</p>
+        </div>
+        <div>
+            <h3 class="text-lg font-semibold text-gray-800 mb-2">เมนู</h3>
+            <ul class="space-y-2">
+                <li><a href="/" class="hover:underline">หน้าแรก</a></li>
+                <li><a href="/deck" class="hover:underline">เด็ค</a></li>
+                <li><a href="/history" class="hover:underline">ประวัติ</a></li>
+                <li><a href="/profile" class="hover:underline">โปรไฟล์</a></li>
+            </ul>
+        </div>
+        <div>
+            <h3 class="text-lg font-semibold text-gray-800 mb-2">ข้อมูล</h3>
+            <ul class="space-y-2">
+                <li><a href="/about" class="hover:underline">เกี่ยวกับเรา</a></li>
+                <li><a href="/terms" class="hover:underline">ข้อกำหนดการใช้งาน</a></li>
+                <li><a href="/privacy" class="hover:underline">นโยบายความเป็นส่วนตัว</a></li>
+            </ul>
+        </div>
+        <div>
+            <h3 class="text-lg font-semibold text-gray-800 mb-2">ติดต่อเรา</h3>
+            <ul class="space-y-2">
+                <li>
+                    <a href="mailto:support@banbantcg.com" class="hover:underline">
+                        📧 support@banbantcg.com
+                    </a>
+                </li>
+                <li>
+                    <a href="https://facebook.com/BanbanTCGThailand" target="_blank" class="hover:underline">
+                        📱 Facebook: Banban TCG Thailand
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="border-t border-gray-200 py-4 text-center text-gray-500 text-sm">
+        © 2024 Banban TCG. สร้างด้วยความรักสำหรับชุมชนโปเกมอนไทย
+    </div>
+</footer>
+
 @endsection
