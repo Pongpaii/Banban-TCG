@@ -3,8 +3,11 @@
 use Illuminate\Support\Facades\Route;
 
 // หน้าแรก
+use App\Models\Card;  // สมมติคุณมี Model Card
+
 Route::get('/', function () {
-    return view('home');
+    $cards = Card::all();  // ดึงข้อมูลการ์ดทั้งหมดจาก DB
+    return view('home', compact('cards'));
 });
 
 // หน้าต่างๆ
