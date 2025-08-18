@@ -18,7 +18,8 @@ Route::get('/login', function () {
 
 Route::get('/register', function () {
     return view('register');
-});
+})->name('register');
+
 
 Route::get('/admin', function () {
     return view('admin.index');
