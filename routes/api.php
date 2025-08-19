@@ -22,3 +22,4 @@ Route::get('/test', function () {
         'timestamp' => now()
     ]);
 });
+Route::delete('/cards/{card}', [CardController::class, 'destroy'])->name('api.cards.destroy');

@@ -23,21 +23,40 @@ class CardController extends Controller
 
     // GET /api/cards/{slug}
     public function show($slug)
-    {
-        $card = Card::where('slug', $slug)->with('priceSources')->first();
+{
+    // ดึงการ์ดจาก DB
+    $card = Card::where('slug', $slug)->firstOrFail();
 
-        if (!$card) {
-            return response()->json([
-                'success' => false,
-                'message' => 'ไม่พบการ์ดที่ค้นหา'
-            ], 404);
-        }
-
-        return response()->json([
-            'success' => true,
-            'data' => $this->formatCardData($card)
-        ]);
+    // ถ้าไม่มี sources ให้สร้าง mock data
+    if (!isset($card->sources) || empty($card->sources)) {
+        $card->sources = [
+            ['name' => 'Shopee', 'price' => '฿3,500'],
+            ['name' => 'Lazada', 'price' => '฿3,450'],
+            ['name' => 'Facebook Marketplace', 'price' => '฿3,600'],
+        ];
     }
+
+    return view('cards.show', compact('card'));
+}
+public function updatePrice(Request $request, Card $card)
+{
+    $request->validate([
+        'price' => 'required|numeric|min:0',
+    ]);
+
+    $card->current_price = $request->price;
+    $card->save();
+
+    return response()->json([
+        'success' => true,
+        'new_price' => number_format($card->current_price),
+    ]);
+}
+public function destroy(Card $card)
+{
+    $card->delete();
+    return response()->json(['success' => true]);
+}
 
     // POST /api/cards/search
     public function search(Request $request)
@@ -47,7 +66,7 @@ class CardController extends Controller
         if ($request->has('name')) {
             $query->where(function ($q) use ($request) {
                 $q->where('name_en', 'LIKE', '%' . $request->name . '%')
-                  ->orWhere('name_th', 'LIKE', '%' . $request->name . '%');
+                    ->orWhere('name_th', 'LIKE', '%' . $request->name . '%');
             });
         }
 
@@ -78,16 +97,13 @@ class CardController extends Controller
             'average_price' => 'nullable|numeric',
             'price_change' => 'nullable|numeric',
         ]);
-    
+
         $card = Card::create($validated);
-    
+
         return redirect()->route('uploadsuccess');
-
-
-
     }
-    
-    
+
+
     // 🔄 Helper method: format card data for API
     private function formatCardData($card)
     {

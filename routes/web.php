@@ -35,6 +35,11 @@ Route::get('/addcard', function () {
     return view('addcard');
 })->name('cards.create');
 
+// ✅ เชื่อม cardshow
+use App\Http\Controllers\Api\CardController;
+
+Route::get('/cards/{slug}', [CardController::class, 'show'])->name('cards.show');
+
 // ✅ บันทึกการ์ดใหม่
 Route::post('/cards', function (Request $request) {
     $validated = $request->validate([
@@ -73,53 +78,9 @@ Route::get('/about', function () {
     return view('about');
 });
 
-// ✅ รายละเอียดการ์ดแบบ static (mock)
-Route::get('/card/{slug}', function ($slug) {
-    $cardData = [
-        'mew-ex' => [
-            'name' => 'Mew EX',
-            'nameTh' => 'มิว ex',
-            'number' => 'SV2a-151/165',
-            'rarity' => 'RR',
-            'rarityTh' => 'ดับเบิลแรร์',
-            'set' => 'Pokemon 151',
-            'setTh' => 'โปเกม่อน 151',
-            'currentPrice' => 3500,
-            'priceChange' => '+5.2%',
-            'image' => '/images/mewex.png',
-            'sources' => [
-                ['name' => 'Pokemon TCG Thailand', 'price' => '฿3,500'],
-                ['name' => 'Card Market TH', 'price' => '฿3,450'],
-                ['name' => 'TCG Facebook Group', 'price' => '฿3,600'],
-            ]
-        ],
-        'kijikigisu-ex' => [
-            'name' => 'Kijikigisu EX',
-            'nameTh' => 'คิจิคิกิสึ ex',
-            'number' => 'SV5s-104/166',
-            'rarity' => 'RR',
-            'rarityTh' => 'ดับเบิลแรร์',
-            'set' => 'Cyber Judge',
-            'setTh' => 'ไซเบอร์ จัดจ์',
-            'currentPrice' => 2800,
-            'priceChange' => '+2.3%',
-            'image' => '/images/kiji.png',
-            'sources' => [
-                ['name' => 'Pokemon TCG Thailand', 'price' => '฿2,800'],
-                ['name' => 'Card Market TH', 'price' => '฾2,750'],
-                ['name' => 'TCG Facebook Group', 'price' => '฿2,900'],
-            ]
-        ]
-    ];
-
-    $card = $cardData[$slug] ?? null;
-
-    if (!$card) {
-        abort(404, 'Card not found');
-    }
-
-    return view('card.show', compact('card', 'slug'));
-});
+// ✅ หน้าupdatecard
+Route::post('/cards/{card}/update-price', [CardController::class, 'updatePrice'])->name('cards.updatePrice');
+Route::delete('/cards/{card}', [CardController::class, 'destroy'])->name('cards.destroy');
 
 // ✅ API สำหรับการ์ด (mock data)
 Route::prefix('api')->group(function () {

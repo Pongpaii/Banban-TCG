@@ -74,32 +74,25 @@
                             </a>
                         </div>
                     </div>
+<!-- Right Illustration -->
+<div class="flex justify-center lg:justify-end">
+    <div class="relative w-64 h-80">
+        <!-- Background Cards (Optional ถ้าอยากให้เป็นชั้นๆ) -->
+        <div class="absolute top-2 left-2 w-48 h-64 bg-gradient-to-br from-blue-200 to-blue-300 rounded-xl shadow-lg transform rotate-6"></div>
+        <div class="absolute top-1 left-1 w-48 h-64 bg-gradient-to-br from-red-200 to-red-300 rounded-xl shadow-lg transform rotate-3"></div>
 
-                    <!-- Right Illustration -->
-                    <div class="flex justify-center lg:justify-end">
-                        <div class="relative">
-                            <div class="relative w-64 h-80">
-                                <!-- Background Cards -->
-                                <div
-                                    class="absolute top-2 left-2 w-48 h-64 bg-gradient-to-br from-blue-200 to-blue-300 rounded-xl shadow-lg transform rotate-6">
-                                </div>
-                                <div
-                                    class="absolute top-1 left-1 w-48 h-64 bg-gradient-to-br from-red-200 to-red-300 rounded-xl shadow-lg transform rotate-3">
-                                </div>
+        <!-- Front Card (รูป Mew) -->
+        <div class="relative w-48 h-64 bg-white rounded-xl shadow-xl border-4 border-yellow-200 overflow-hidden">
+            <img src="{{ asset('images/mewex.png') }}" alt="Mew EX" class="w-full h-full object-cover">
+        </div>
 
-                                <!-- Front Card -->
-                                <div
-                                    class="relative w-48 h-64 bg-white rounded-xl shadow-xl border-4 border-yellow-200 overflow-hidden">
-                                    <img src="/images/mewex.png" alt="Mew EX" class="w-full h-full object-cover">
-                                </div>
+        <!-- Scanner Effect -->
+        <div class="absolute -top-4 -right-4 w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center shadow-lg">
+            <i data-lucide="camera" class="h-6 w-6 text-gray-800"></i>
+        </div>
+    </div>
+</div>
 
-                                <!-- Scanner Effect -->
-                                <div
-                                    class="absolute -top-4 -right-4 w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center shadow-lg">
-                                    <i data-lucide="camera" class="h-6 w-6 text-gray-800"></i>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -148,8 +141,8 @@
 
             <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6" id="popular-cards">
                 @forelse ($cards as $card)
-                    <a href="{{ url('/card/'.$card->slug) }}" class="block bg-white border-2 border-transparent hover:border-yellow-200 rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300">
-                        <div class="aspect-[3/4] relative overflow-hidden bg-gray-100">
+                <a href="{{ route('cards.show', $card->slug) }}" class="block bg-white border-2 border-transparent hover:border-yellow-200 rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300">
+                    <div class="aspect-[3/4] relative overflow-hidden bg-gray-100">
                             <img src="{{ $card->image_url }}" alt="{{ $card->name_th }}" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300">
                             <div class="absolute top-3 right-3">
                                 <div class="px-2 py-1 bg-black bg-opacity-70 text-white text-xs font-medium rounded">
@@ -187,45 +180,7 @@
         </main>
     </div>
 
-    <script>
-        // Load popular cards
-        fetch('/api/cards')
-            .then(response => response.json())
-            .then(data => {
-                const container = document.getElementById('popular-cards');
-                if (data.success && data.data) {
-                    container.innerHTML = data.data.map(card => `
-                <a href="/card/${card.name.toLowerCase().replace(/\s+/g, '-')}" class="block bg-white border-2 border-transparent hover:border-yellow-200 rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300">
-                    <div class="aspect-[3/4] relative overflow-hidden bg-gray-100">
-                        <img src="${card.image}" alt="${card.nameTh}" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300">
-                        <div class="absolute top-3 right-3">
-                            <div class="px-2 py-1 bg-black bg-opacity-70 text-white text-xs font-medium rounded">
-                                ${card.rarity}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="font-bold text-gray-800 text-lg mb-1">${card.nameTh}</h3>
-                        <p class="text-sm text-gray-600 mb-2">${card.number}</p>
-                        <div class="flex items-center justify-between">
-                            <div class="text-xl font-bold text-yellow-600">${card.price}</div>
-                            <div class="flex items-center text-green-600 text-sm">
-                                <i data-lucide="trending-up" class="h-4 w-4 mr-1"></i>
-                                <span>+2.3%</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            `).join('');
-                    lucide.createIcons();
-                }
-            })
-            .catch(error => {
-                console.error('Error loading cards:', error);
-                document.getElementById('popular-cards').innerHTML =
-                    '<p class="text-gray-500 text-center col-span-full">ไม่สามารถโหลดข้อมูลการ์ดได้</p>';
-            });
-    </script>
+ 
     <!-- Why Banban TCG (Compact Version) -->
     <section class="py-12">
         <div class="max-w-5xl mx-auto px-4">
@@ -302,5 +257,6 @@
             © 2024 Banban TCG. สร้างด้วยความรักสำหรับชุมชนโปเกมอนไทย
         </div>
     </footer>
+
 
 @endsection
