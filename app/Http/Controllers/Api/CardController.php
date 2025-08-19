@@ -81,12 +81,12 @@ class CardController extends Controller
     
         $card = Card::create($validated);
     
-        return response()->json([
-            'success' => true,
-            'message' => 'การ์ดถูกเพิ่มเรียบร้อยแล้ว',
-            'data' => $card
-        ], 201);
+        return redirect()->route('uploadsuccess');
+
+
+
     }
+    
     
     // 🔄 Helper method: format card data for API
     private function formatCardData($card)

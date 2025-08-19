@@ -139,7 +139,7 @@
 
       <!-- ADD Cards Section -->
       <div class="mb-12">
-        <h2 class="text-2xl lg:text-3xl font-bold text-gray-800 mb-8">การ์ด ล่าสุด</h2>
+        <h2 class="text-2xl lg:text-3xl font-bold text-gray-800 mb-8">การ์ดล่าสุด</h2>
 
         <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6" id="popular-cards">
             <!-- Cards will be loaded here via JavaScript -->
@@ -178,7 +178,7 @@
 
             <!-- Popular Cards Section -->
             <div class="mb-12">
-                <h2 class="text-2xl lg:text-3xl font-bold text-gray-800 mb-8">การ์ดยอดนิยม</h2>
+               
 
                 <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6" id="popular-cards">
                     <!-- Cards will be loaded here via JavaScript -->

@@ -1,58 +1,81 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use App\Models\Card;
 
-// หน้าแรก
-use App\Models\Card;  // สมมติคุณมี Model Card
-
+// ✅ หน้าแรก - โหลดการ์ดและส่งให้ view
 Route::get('/', function () {
-    $cards = Card::all();  // ดึงข้อมูลการ์ดทั้งหมดจาก DB
+    $cards = Card::all();  // ดึงการ์ดทั้งหมดจาก DB
     return view('home', compact('cards'));
-});
+})->name('home');
 
-// หน้าต่างๆ
+// ✅ หน้าสแกน
 Route::get('/scan', function () {
     return view('scan');
 });
 
+// ✅ หน้าล็อกอิน
 Route::get('/login', function () {
     return view('login');
 });
 
+// ✅ หน้าสมัครสมาชิก
 Route::get('/register', function () {
     return view('register');
 })->name('register');
 
-
+// ✅ หน้าแอดมิน
 Route::get('/admin', function () {
     return view('admin.index');
 });
-use App\Http\Controllers\Api\CardController;
 
-Route::post('/cards/store', [CardController::class, 'store'])->name('cards.store');
-
-
-Route::get('addcard', function () {
+// ✅ หน้าฟอร์มเพิ่มการ์ด
+Route::get('/addcard', function () {
     return view('addcard');
-});
+})->name('cards.create');
+
+// ✅ บันทึกการ์ดใหม่
+Route::post('/cards', function (Request $request) {
+    $validated = $request->validate([
+        'name_th' => 'required|string|max:255',
+        'name_en' => 'required|string|max:255',
+        'set_name' => 'required|string|max:255',
+        'rarity' => 'required|string|max:255',
+        'card_number' => 'required|string|max:255',
+        'description' => 'nullable|string',
+        'image_url' => 'nullable|url',
+        'slug' => 'required|string|unique:cards,slug',
+    ]);
+
+    Card::create($validated);
+
+    return redirect()->route('uploadsuccess');
+})->name('cards.store');
+
+// ✅ หน้า upload success
+Route::get('/uploadsuccess', function () {
+    return view('uploadsuccess');
+})->name('uploadsuccess');
+
+// ✅ หน้าประวัติ
 Route::get('/history', function () {
     return view('history');
 });
 
+// ✅ หน้าโปรไฟล์
 Route::get('/profile', function () {
     return view('profile');
 });
 
+// ✅ หน้าเกี่ยวกับ
 Route::get('/about', function () {
     return view('about');
 });
 
-// <CHANGE> Updated card route with proper card data matching the API
+// ✅ รายละเอียดการ์ดแบบ static (mock)
 Route::get('/card/{slug}', function ($slug) {
-    
-    // Card data that matches your API
     $cardData = [
-        
         'mew-ex' => [
             'name' => 'Mew EX',
             'nameTh' => 'มิว ex',
@@ -87,19 +110,18 @@ Route::get('/card/{slug}', function ($slug) {
                 ['name' => 'TCG Facebook Group', 'price' => '฿2,900'],
             ]
         ]
-        
     ];
-    
+
     $card = $cardData[$slug] ?? null;
-    
+
     if (!$card) {
         abort(404, 'Card not found');
     }
-    
+
     return view('card.show', compact('card', 'slug'));
 });
 
-// <CHANGE> Updated API route to match the card data above
+// ✅ API สำหรับการ์ด (mock data)
 Route::prefix('api')->group(function () {
     Route::get('/cards', function () {
         return response()->json([
