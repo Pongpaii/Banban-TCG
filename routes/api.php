@@ -9,6 +9,9 @@ Route::get('/cards', [CardController::class, 'index']);
 Route::get('/cards/{slug}', [CardController::class, 'show']);
 Route::post('/cards/search', [CardController::class, 'search']);
 
+
+Route::post('/cards/{card}/update-name', [CardController::class, 'updateName']);
+
 // Admin routes
 Route::prefix('admin')->group(function () {
     Route::post('/cards', [AdminController::class, 'addCard']);

@@ -38,7 +38,17 @@
             <div class="mb-6">
                 <div class="flex items-start justify-between mb-3">
                     <div>
-                        <h2 class="text-2xl font-bold text-gray-800 mb-1">{{ $card['nameTh'] }}</h2>
+                        <div id="cardNameDisplay" class="flex items-center space-x-2 mb-2">
+                            <h2 class="text-2xl font-bold text-gray-800" id="cardNameText">{{ $card['nameTh'] }}</h2>
+                            <button id="editNameBtn" class="text-blue-600 hover:underline text-sm">Edit</button>
+                        </div>
+                        
+                        <div id="cardNameEditForm" class="hidden flex items-center space-x-2 mb-2">
+                            <input type="text" id="newCardName" value="{{ $card['nameTh'] }}" class="border rounded px-2 py-1 w-52">
+                            <button id="saveNameBtn" class="bg-green-100 text-green-700 px-2 py-1 rounded text-sm">Save</button>
+                            <button id="cancelNameBtn" class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-sm">Cancel</button>
+                        </div>
+                        
                         <p class="text-gray-600">{{ $card['name'] }}</p>
                     </div>
                     <span class="px-2 py-1 bg-gray-100 text-gray-700 text-sm font-medium rounded">
@@ -62,7 +72,7 @@
             <div class="text-center">
                 <p class="text-sm text-gray-600 mb-1">ราคาปัจจุบัน</p>
                 <div class="flex items-center justify-center space-x-2">
-                    <span id="currentPrice"
+                    <span id="price"
                         class="text-3xl font-bold text-gray-800">฿{{ number_format($card['currentPrice']) }}</span>
                     <button id="editPriceBtn" class="px-2 py-1 bg-blue-100 text-blue-700 rounded text-sm">
                         Edit
@@ -217,7 +227,8 @@
         document.getElementById('deleteCardBtn').addEventListener('click', () => {
     if(!confirm('คุณแน่ใจหรือไม่ว่าจะลบการ์ดนี้?')) return;
 
-    fetch("/cards/{{ $card->id }}", {
+
+    fetch("/cards/{{ $card['id'] }}", {  
         method: 'DELETE',
         headers: {
             'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -238,6 +249,51 @@
         // Initialize Lucide icons
         lucide.createIcons();
        
+        document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM ready');
+
+    document.getElementById('editNameBtn').addEventListener('click', () => {
+        console.log('editNameBtn clicked');
+        document.getElementById('cardNameDisplay').classList.add('hidden');
+        document.getElementById('cardNameEditForm').classList.remove('hidden');
+    });
+
+    document.getElementById('cancelNameBtn').addEventListener('click', () => {
+        document.getElementById('cardNameEditForm').classList.add('hidden');
+        document.getElementById('cardNameDisplay').classList.remove('hidden');
+    });
+
+    document.getElementById('saveNameBtn').addEventListener('click', () => {
+        const newName = document.getElementById('newCardName').value.trim();
+
+        if (!newName) {
+            alert('กรุณากรอกชื่อใหม่');
+            return;
+        }
+        fetch(`/api/cards/{{ $card['id'] }}/update-name`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({ nameTh: newName }),
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById('cardNameText').textContent = newName;
+                document.getElementById('cardNameEditForm').classList.add('hidden');
+                document.getElementById('cardNameDisplay').classList.remove('hidden');
+            } else {
+                alert('เกิดข้อผิดพลาดในการบันทึกชื่อ');
+            }
+        })
+        .catch(() => {
+            alert('เกิดข้อผิดพลาดในการเชื่อมต่อ');
+        });
+    });
+});
 
     </script>
 @endsection

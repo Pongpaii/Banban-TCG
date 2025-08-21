@@ -21,23 +21,23 @@ class CardController extends Controller
         ]);
     }
 
-    // GET /api/cards/{slug}
     public function show($slug)
-{
-    // ดึงการ์ดจาก DB
-    $card = Card::where('slug', $slug)->firstOrFail();
-
-    // ถ้าไม่มี sources ให้สร้าง mock data
-    if (!isset($card->sources) || empty($card->sources)) {
-        $card->sources = [
-            ['name' => 'Shopee', 'price' => '฿3,500'],
-            ['name' => 'Lazada', 'price' => '฿3,450'],
-            ['name' => 'Facebook Marketplace', 'price' => '฿3,600'],
-        ];
+    {
+        $card = Card::with('priceSources')->where('slug', $slug)->firstOrFail();
+        $cardData = $this->formatCardData($card);
+    
+        if (empty($cardData['sources']) || $cardData['sources']->isEmpty()) {
+            $cardData['sources'] = collect([
+                ['name' => 'Shopee', 'price' => '฿3,500'],
+                ['name' => 'Lazada', 'price' => '฿3,450'],
+                ['name' => 'Facebook Marketplace', 'price' => '฿3,600'],
+            ]);
+        }
+    
+        return view('cards.show', ['card' => $cardData]);
     }
-
-    return view('cards.show', compact('card'));
-}
+    
+    
 public function updatePrice(Request $request, Card $card)
 {
     $request->validate([
@@ -96,6 +96,7 @@ public function destroy(Card $card)
             'slug' => 'required|string|unique:cards,slug',
             'average_price' => 'nullable|numeric',
             'price_change' => 'nullable|numeric',
+            'price' => 'nullable|numeric|min:0',   // ✅ เพิ่มตรงนี้
         ]);
 
         $card = Card::create($validated);
@@ -103,7 +104,19 @@ public function destroy(Card $card)
         return redirect()->route('uploadsuccess');
     }
 
+   public function updateName(Request $request, Card $card)
+{
+    $request->validate([
+        'nameTh' => 'required|string|max:255',
+    ]);
+    
+    $card->name_th = $request->nameTh;
+    $card->save();
 
+    return response()->json(['success' => true]);
+}
+
+    
     // 🔄 Helper method: format card data for API
     private function formatCardData($card)
     {
@@ -118,6 +131,8 @@ public function destroy(Card $card)
             'set' => $card->set_name,
             'setTh' => $this->getSetTh($card->set_name),
             'description' => $card->description,
+             // ✅ เพิ่ม currentPrice ให้ Blade ใช้งาน
+        'currentPrice' => $card->average_price ?? ($card->priceSources->avg('price') ?? 0),
             'image' => $card->image_url,
             'price' => '฿' . number_format($card->average_price),
             'priceChange' => $card->price_change,

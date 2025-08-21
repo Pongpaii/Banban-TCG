@@ -131,6 +131,20 @@
                     class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 />
             </div>
+            <div>
+                <label for="price" class="block font-semibold mb-1 text-gray-700">ราคา (บาท):</label>
+                <input
+                    type="number"
+                    name="price"
+                    id="price"
+                    value="{{ old('price') }}"
+                    step="0.01"
+                    min="0"
+                    required
+                    class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                />
+            </div>
+            
 
             <div>
                 <button
